@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	">
+<bean id="kaiBean" class="yk.bean.KaiBean"></bean>
+<bean id="kaiService" class="yk.service.KaiService" p:kaiBean-ref="kaiBean" p:kaiDao-ref="kaiDao"></bean>
+<bean id="kaiDao" class="yk.dao.KaiDao" ></bean>
+
+<!-- p标签与下面这种配置效果相同,只是替换了 <property>标签 
+<bean id="kaiService" class="yk.service.KaiService">
+	<property name="kaiBean" ref="kaiBean">
+	</property>
+</bean>
+-->
+<!-- AOP配置 -->
+<bean id="common" class="yk.aop.Common"></bean>
+<bean id="aop" class="yk.aop.Aop"></bean>
+
+<!-- AOP配置  spring会自动在JDK动态代理和CGLIB之间转换 -->
+<!-- 如果AOP采用注解模式，则需要引入下列标签。下列xml方式不需要引入 -->
+<!-- <aop:aspectj-autoproxy></aop:aspectj-autoproxy> -->
+
+
+<aop:config>
+
+
+<!-- 定义一个切面 -->
+<aop:aspect id="myaop" ref="aop">
+<!-- expression表达式 第一个*表示返回类型，要加空格，第二个*代表方法名，(..)代表方法的参数 -->
+<!-- 定义一个切入点 -->
+<aop:pointcut id="target" expression="execution(* yk.aop.Common.*(..))" />
+<aop:pointcut id="target1" expression="execution(* yk.aop.Common.endWork(..))" />
+
+<aop:before method="before" pointcut-ref="target"/>
+<aop:after-returning method="after_returning" pointcut-ref="target"/>
+<aop:after-throwing method="throwing" pointcut-ref="target"/>
+<aop:around method="around" pointcut-ref="target"/>
+<aop:after method="after" pointcut-ref="target"/>
+<!-- 
+<aop:before method="before" pointcut-ref="target1"/>
+
+方法正常结束之后
+<aop:after-returning method=""/>
+
+方法抛出异常之后
+ <aop:after-throwing method=""/>
+ 
+ 方法最终执行 after(finally)
+ <aop:after method=""/>
+ 
+<aop:after method="after" pointcut-ref="target1"/>
+ -->
+
+</aop:aspect>
+
+</aop:config>
+
+<!-- 配置事务管理器 -->
+<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="dataSource">
+	
+</bean>
+<!-- aop配置声明式事务 -->
+<aop:config>
+	<aop:pointcut expression="execution(* yk.jdbcTemplate.BaseService.*(..))" id="txMethod"/>
+	<aop:advisor pointcut-ref="txMethod" advice-ref="txAdvice"/>
+</aop:config>
+<!-- 配置事务增强 -->
+<tx:advice id="txAdvice" transaction-manager="txManager">
+	<tx:attributes>
+	<tx:method name="add*"/>
+	<tx:method name="delete*"/>
+	</tx:attributes>
+</tx:advice>
+
+
+
+<!-- 导入资源文件 -->  
+    <context:property-placeholder location="classpath:jdbc.properties" />  
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+        <property name="driverClassName" value="${jdbc.driverClassName}"></property>  
+        <property name="url" value="${jdbc.url}"></property>  
+        <property name="username" value="${jdbc.username}"></property>  
+        <property name="password" value="${jdbc.password}"></property>  
+        <!-- 连接池启动时的初始值 -->  
+        <property name="initialSize"  value="${jdbc.initialSize}" />  
+        <!-- 连接池的最大值 -->  
+        <property name="maxActive"  value="${jdbc.maxActive}" />  
+        <!-- 最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止 -->  
+        <property name="maxIdle"  value="${jdbc.maxIdle}" />  
+        <!--    最小空闲值.当空闲的连接数少于阀值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请 -->  
+        <property name="minIdle"  value="${jdbc.minIdle}" />  
+	</bean>  
+    
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
+        <property name="dataSource" ref="dataSource"></property>  
+    </bean>  
+	
+    <bean id="springDao" class="yk.jdbcTemplate.SpringDao">  
+        <property name="jdbcTemplate" ref="jdbcTemplate"></property>  
+    </bean>  
+    <bean id="baseDao" class="yk.jdbcTemplate.BaseDao">  
+        <property name="jdbc" ref="jdbcTemplate"></property>  
+    </bean>  
+    <bean id="txBean" class="yk.jdbcTemplate.TxBean">  
+    </bean>  
+	<bean id="baseService" class="yk.jdbcTemplate.BaseService" p:baseDao-ref="baseDao" p:tx-ref="txBean">
+	
+	</bean>
+
+</beans>
