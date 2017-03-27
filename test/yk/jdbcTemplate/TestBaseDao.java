@@ -16,16 +16,15 @@ public class TestBaseDao {
 	}
 	@Test
 	public void testAdd(){
-		tx.setName("tx33");
+		tx.setName("tx36");
 		bd.add(tx);
-		int a=9/0;
-		tx.setName("tx44");
+		tx.setName("tx46");
 		bd.add(tx);
 	}
 	
 	@Test
 	public void testDelete(){
-		bd.delete(5);
+		bd.delete(12);
 	}
 	
 	@Test

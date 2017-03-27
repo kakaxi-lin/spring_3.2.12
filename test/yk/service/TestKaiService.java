@@ -16,9 +16,9 @@ public class TestKaiService {
 	}
 	@Test
 	public void insert(){
-	
+		
 		kaiService.insert();
-		kaiService.insert();
-		throw new RuntimeException();
+//		kaiService.insert();
+//		throw new RuntimeException();
 	}
 }

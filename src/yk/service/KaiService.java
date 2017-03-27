@@ -29,8 +29,8 @@ public class KaiService {
 	}
 	public void insert(){
 		kaiDao.insert("tx");
-		kaiDao.insert("tx");
-		throw new RuntimeException("tx..");
+		kaiDao.insert("tx1");
+//		throw new RuntimeException("tx..");
 	}
 
 }
