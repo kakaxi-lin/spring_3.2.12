@@ -1,1 +1,2 @@
-使用Spring时，普通Bean、Spring MVC用注解方式，AOP及声明式事务配置用XML方式
+使用Spring时，普通Bean、Spring MVC用注解方式;
+AOP及声明式事务配置用XML方式
