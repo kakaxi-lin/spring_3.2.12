@@ -68,7 +68,7 @@ public class TestBaseDao {
 	@Test
 	public void testAddOne() throws IOException{
 		TX tx=new TX();
-		tx.setName("²ÁÄão");
+		tx.setName("²ÁÄãxxx");
 		bd.addOne(tx);
 		
 	}
@@ -77,7 +77,7 @@ public class TestBaseDao {
 	public void testUpdateOne() throws IOException{
 		TX tx=new TX();
 		tx.setName("¿¨¿¨2");
-		tx.setId(13);
+		tx.setId(4);
 		bd.updateOne(tx);
 		
 	}

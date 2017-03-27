@@ -16,7 +16,7 @@ public class TestBaseDao {
 	}
 	@Test
 	public void testAdd(){
-		tx.setName("tx36");
+		tx.setName("tx36¶Ô¶Ô¶Ô");
 		bd.add(tx);
 		tx.setName("tx46");
 		bd.add(tx);

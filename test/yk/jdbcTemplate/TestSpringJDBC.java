@@ -3,7 +3,6 @@ package yk.jdbcTemplate;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import yk.service.KaiService;
 
 public class TestSpringJDBC {
 	SpringDao sd;
