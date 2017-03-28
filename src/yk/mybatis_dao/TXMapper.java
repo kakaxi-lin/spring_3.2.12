@@ -22,7 +22,7 @@ public interface TXMapper {
 	void deleteBatch(List<Integer> list);
 
 	// 增加
-	public void addOne(TX tx);
+	public void insertOne(TX tx);
 
 	// 更新
 	public void updateOne(TX tx);

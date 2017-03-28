@@ -51,8 +51,7 @@
 	<!-- 配置事务增强 -->
 	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
-			<tx:method name="add*" />
-			<tx:method name="delete*" />
+			<tx:method name="check*" />
 		</tx:attributes>
 	</tx:advice>
 

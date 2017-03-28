@@ -57,13 +57,25 @@ public class TXService {
 	}
 
 	// 增加
-	public void addOne(TX tx) {
-		txDao.addOne(tx);
+	public void insertOne(TX tx) {
+		txDao.insertOne(tx);
 	}
 
 	// 更新
 	public void updateOne(TX tx) {
 		txDao.updateOne(tx);
+	}
+	
+	//检测事务一致性
+	public void checkTrans(){
+		TX tx =new TX();
+		tx.setName("给我");
+		txDao.insertOne(tx);
+		int a=8/0;
+		
+		tx.setName("吹");
+		txDao.insertOne(tx);
+		
 	}
 
 }
