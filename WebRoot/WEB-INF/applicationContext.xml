@@ -69,12 +69,15 @@
 </aop:config>
 
 
-    
+    <!-- 几种持久层配置 -->
 	
 	<!-- 导入spring JDBC配置 -->
 	<!-- <import resource="spring-config/spring-springJDBC.xml"/> -->
 	
-	<!-- 导入spring Mybatis配置 -->
-	<import resource="spring-config/spring-mybatis.xml"/>
+	<!-- 导入spring Mybatis配置 使用 SqlSessionTemplate-->
+	<!-- <import resource="spring-config/spring-mybatis.xml"/> -->
+	
+	<!-- 导入spring Mybatis配置 使用映射接口 -->
+	<import resource="spring-config/spring-mybatis-dao.xml"/>
 
 </beans>

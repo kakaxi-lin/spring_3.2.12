@@ -1,0 +1,4 @@
+yk.mybatis_dao
+此包是使用 映射接口 来整合在Spring中使用Mybatis
+配置文件在
+/WEB-INF/spring-config/spring-mybatis-dao.xml

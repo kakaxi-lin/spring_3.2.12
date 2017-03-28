@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	">
+	<!-- Spring 与 Mybatis 配置整合 -->
+
+	<!-- 引入数据源文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<!-- 连接池启动时的初始值 -->
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<!-- 连接池的最大值 -->
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<!-- 最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止 -->
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<!-- 最小空闲值.当空闲的连接数少于阀值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请 -->
+		<property name="minIdle" value="${jdbc.minIdle}" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+
+		p:dataSource-ref="dataSource"></bean>
+
+	<!-- aop配置声明式事务 -->
+	<!-- 给哪个类加事务控制，当此类中的指定方法中抛出异常时 才有效回滚 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* yk.mybatis_dao.TXService.*(..))"
+			id="txMethod" />
+		<aop:advisor pointcut-ref="txMethod" advice-ref="txAdvice" />
+	</aop:config>
+
+	<!-- 配置事务增强 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="add*" />
+			<tx:method name="delete*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 注入SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 加载Mybatis主配置文件 可不写 -->
+		<!-- <property name="configLocation" value="classpath:mybatis.xml"></property> -->
+		<!-- 扫描Bean的映射文件 -->
+		<property name="mapperLocations" value="classpath:yk/mybatis_dao/*.xml"></property>
+	</bean>
+
+	<!-- 将映射接口转化为Spring容器中的Bean -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<!-- 扫描指定的包及子包下的接口类，如果在sql映射文件中定义过，则将其定义为一个Spring Bean -->
+		<property name="basePackage" value="yk.mybatis_dao" />
+	</bean>
+
+	<!-- 加载其他Bean -->
+	<context:component-scan base-package="yk.mybatis_dao"></context:component-scan>
+
+</beans>

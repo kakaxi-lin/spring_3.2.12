@@ -1,0 +1,5 @@
+yk.mybatis
+此包是使用  SqlSessionTemplate 来整合在Spring中使用Mybatis
+配置文件在
+/WEB-INF/spring-config/spring-mybatis.xml
+
