@@ -78,6 +78,8 @@
 	<!-- <import resource="spring-config/spring-mybatis.xml"/> -->
 	
 	<!-- 导入spring Mybatis配置 使用映射接口 -->
-	<import resource="spring-config/spring-mybatis-dao.xml"/>
+	<!-- <import resource="spring-config/spring-mybatis-dao.xml"/> -->
+	<!-- 导入spring Hibernate配置-->
+	<import resource="spring-config/spring-hibernate.xml"/>
 
 </beans>
