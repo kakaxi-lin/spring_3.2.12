@@ -33,7 +33,7 @@ public class BaseDao {
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("file:WebRoot/WEB-INF/applicationContext.xml");
 		BaseDao bd=ctx.getBean(BaseDao.class);
-		bd.select();
+		bd.save();
 	}
 
 }

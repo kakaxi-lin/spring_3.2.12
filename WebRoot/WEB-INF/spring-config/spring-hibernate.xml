@@ -45,7 +45,9 @@
         <!-- //加载实体类的映射文件位置及名称 -->
         <property name="mappingLocations" value="classpath:yk/hibernate/*.hbm.xml"></property>
     </bean>  
-	<!-- 配置事务管理器 -->
+	
+	
+  <!-- 配置事务管理器 -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean> 
@@ -64,8 +66,6 @@
 		<tx:method name="delete*"/>
 		</tx:attributes>
 	</tx:advice>
-	
-  
     
 	
 	

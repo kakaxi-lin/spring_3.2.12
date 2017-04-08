@@ -5,6 +5,7 @@
 <hibernate-configuration>
     <session-factory>
     <property name="show_sql">true</property>
+    <property name="javax.persistence.validation.mode">none</property>
     </session-factory>
    
     
