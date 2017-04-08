@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.orm.hibernate4.SpringSessionContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,7 +16,7 @@ public class BaseDao {
 	@Resource
 	private SessionFactory sessionFactory;
 	private Session getSession(){
-		Session session=sessionFactory.openSession();
+		Session session=sessionFactory.getCurrentSession();
 		return session;
 	}
 	public void select(){
@@ -26,14 +27,18 @@ public class BaseDao {
 		}
 	}
 	public void save(){
+//		SpringSessionContext
+//		getSession().beginTransaction();
 		Kai kai=new Kai();
 		kai.setName("pp");
 		getSession().save(kai);
+//		getSession().beginTransaction().commit();
+		
 	}
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("file:WebRoot/WEB-INF/applicationContext.xml");
 		BaseDao bd=ctx.getBean(BaseDao.class);
-		bd.select();
+		bd.save();
 	}
 
 }

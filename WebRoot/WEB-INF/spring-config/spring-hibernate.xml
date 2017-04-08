@@ -45,25 +45,7 @@
         <!-- //加载实体类的映射文件位置及名称 -->
         <property name="mappingLocations" value="classpath:yk/hibernate/*.hbm.xml"></property>
     </bean>  
-	<!-- 配置事务管理器 -->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"></property>
-    </bean> 
 	
-	<!-- aop配置声明式事务 -->
-	<!-- 给哪个类加事务控制，当此类中的指定方法中抛出异常时 才有效回滚 -->
-	<aop:config>
-		<aop:pointcut expression="execution(* yk.hibernate.BaseService.*(..))" id="txMethod"/>
-		<aop:advisor pointcut-ref="txMethod" advice-ref="txAdvice"/>
-	</aop:config>
-
-	<!-- 配置事务增强 -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-		<tx:method name="add*"/>
-		<tx:method name="delete*"/>
-		</tx:attributes>
-	</tx:advice>
 	
   
     
