@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.orm.hibernate4.SpringSessionContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,7 +16,7 @@ public class BaseDao {
 	@Resource
 	private SessionFactory sessionFactory;
 	private Session getSession(){
-		Session session=sessionFactory.openSession();
+		Session session=sessionFactory.getCurrentSession();
 		return session;
 	}
 	public void select(){
@@ -27,7 +28,7 @@ public class BaseDao {
 	}
 	public void save(){
 		Kai kai=new Kai();
-		kai.setName("pp");
+		kai.setName("ppxxx");
 		getSession().save(kai);
 	}
 	public static void main(String[] args) {

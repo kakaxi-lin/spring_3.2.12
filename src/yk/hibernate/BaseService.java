@@ -7,6 +7,7 @@ public class BaseService {
 	static BaseDao bd=null;
 	public void add(){
 		bd.save();
+		int a=9/0;
 		bd.save();
 	}
 	public static void main(String[] args) {
