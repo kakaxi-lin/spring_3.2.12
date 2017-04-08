@@ -47,7 +47,34 @@
     </bean>  
 	
 	
-  
+  <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean> 
+	
+	<!-- aop配置声明式事务 -->
+	<!-- 给哪个类加事务控制，当此类中的指定方法中抛出异常时 才有效回滚 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* yk.hibernate.BaseDao.*(..))" id="txMethod"/>
+		<aop:advisor pointcut-ref="txMethod" advice-ref="txAdvice"/>
+	</aop:config>
+   <aop:config >
+		<aop:pointcut expression="execution(* yk.hibernate.BaseService.*(..))" id="txMethod1"/>
+		<aop:advisor pointcut-ref="txMethod1" advice-ref="txAdvice"/>
+	</aop:config>
+	<!-- 配置事务增强 -->
+	<!--hibernate4必须配置为开启事务 为dao的每个方法都得开启事务 否则 getCurrentSession()获取不到-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+		<!-- 只读模式，事务不会提交 -->
+		<tx:method name="select*" read-only="true"/>
+		<tx:method name="add*"/>
+		<tx:method name="delete*"/>
+		<tx:method name="save*"/>
+		
+		</tx:attributes>
+	</tx:advice>
+
     
 	
 	

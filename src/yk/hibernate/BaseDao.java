@@ -30,7 +30,7 @@ public class BaseDao {
 //		SpringSessionContext
 //		getSession().beginTransaction();
 		Kai kai=new Kai();
-		kai.setName("pp");
+		kai.setName("ppxxx");
 		getSession().save(kai);
 //		getSession().beginTransaction().commit();
 		
