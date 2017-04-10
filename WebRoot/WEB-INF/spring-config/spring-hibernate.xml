@@ -15,7 +15,7 @@
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 	">
-	<!-- Spring 与 Mybatis 配置整合 -->
+	<!-- Spring 与 hibernate 配置整合 -->
 	
 	<!-- 引入数据源文件 -->  
     <context:property-placeholder location="classpath:jdbc.properties" />  
